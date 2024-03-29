@@ -15,6 +15,27 @@
     justify-content: center;
   }
 
+.navbar {
+  background-color: #333;
+  overflow: hidden;
+  padding: 10px 0;
+  width: 100%;
+  text-align: right;
+}
+
+.navbar a {
+  display: inline-block;
+  color: white;
+  padding: 14px 20px;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
   .container, .pinyin-container {
     max-width: 90%;
     width: 400px;
@@ -128,11 +149,15 @@
 </head>
 <body>
 
+<!-- Navigation Bar -->
+<div class="navbar">
+  <a href="https://linsnotes.com/apps" target="_blank">APPS</a>
+  <a href="https://github.com/linsnotes" target="_blank">GitHub</a>
+</div>
+
    <!-- Description Container -->
   <div id="description-container" style="background-color: crimson; color: #fff; padding: 10px; text-align: center;">
-    
-  <p>This website is designed to help Chinese language learners enhance their oral reading skills. The text-to-speech feature is not limited to Chinese but supports other languages as well. It utilizes your browser's capabilities, and hence the quality of the speech depends on the device and web browser you are using. When you open this website on the <strong><span style="text-decoration: underline;color: lightgreen;"><a href="https://www.microsoft.com/en-us/edge" style="color: lightgreen;" target="_blank">Microsoft Edge browser on a Windows PC</a></span></strong>, it has the most options of natural voices to choose from.</p>
-    
+    <p>This website is designed to help Chinese language learners enhance their oral reading skills. The text-to-speech feature is not limited to Chinese but supports other languages as well. It utilizes your browser's capabilities, and hence the quality of the speech depends on the device and web browser you are using. When you open this website on the <strong><span style="text-decoration: underline;color: lightgreen;"><a href="https://www.microsoft.com/en-us/edge" style="color: lightgreen;" target="_blank">Microsoft Edge browser on a Windows PC</a></span></strong>, it has the most options of natural voices to choose from.</p>
     <button onclick="closeDescription()" style="background-color: #4CAF50; width: 10em; color: #fff; padding: 10px; border: none; cursor: pointer;">Close</button>
 
   </div>
@@ -141,7 +166,7 @@
     <div class="instructions">
       <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">Text to Speech</p>
 
-<p style="margin-bottom: 10px;">Select the correct language before clicking "<span style="color: #4CAF50;"><b>Generate Speech</b></span>". You may visit <a href="https://www.zaobao.com.sg/" target="_blank">zaobao.com.sg</a> and copy and paste some news articles to practice reading aloud.</p>
+<p style="margin-bottom: 10px;">This text-to-speech feature utilizes the built-in capabilities of web browsers for speech synthesis. For the best quality and most natural-sounding speech experience, open this web page using the <strong><span style="text-decoration: underline;color: lightgreen;"><a href="https://www.microsoft.com/en-us/edge" target="_blank">Microsoft Edge browser on a Windows PC</a></span></strong>.</p>
 
 
     </div>
@@ -167,7 +192,7 @@
       <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Loading...">
     </div>
     <div class="adjustment-info">
-<p style="color: grey; margin-bottom: 25px;"><span style="color: red;"><b>Note:</b></span><br><br>This text-to-speech feature utilizes the built-in capabilities of web browsers for speech synthesis.<br><br>For the best quality and most natural-sounding speech experience, open this web page using the <span style="color: navy;"><b>Edge browser</b></span> on a <span style="color: ;"><b>Windows PC</b></span>.<br><br>For <span style="color: navy;"><b>iOS</b></span> users, you can select either Tingting(zh-CN) or Meijia (zh-TW) for Chinese text-to-speech synthesis. For <span style="color: navy;"><b>Android</b></span> users, the web browser may not have the necessary capabilities for text-to-speech functionality. Even if it does work, the quality of the speech produced will be very poor.</p>
+<p style="color: grey; margin-bottom: 25px;"><span style="color: red;"><b>Note:</b></span><br><br>For <span style="color: navy;"><b>iOS</b></span> users, you can select either <b><span style="color: red;">Tingting(zh-CN)</span></b> or <b><span style="color: red;">Meijia (zh-TW)</span></b> for Chinese text-to-speech synthesis. For <span style="color: navy;"><b>Android</b></span> users, the web browser may not have the necessary capabilities for text-to-speech functionality. Even if it does work, the quality of the speech produced will be very poor.</p>
 </div>
   </div>
 
@@ -178,6 +203,8 @@
       <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">Pinyin Conversion</p>
       <p style="margin-bottom: 10px;">Paste your Chinese text.<br>Click the "<span style="color: #4CAF50;"><b>Generate Pinyin</b></span>" button to view the Pinyin transcription.</p>
 <br>
+<br>
+
     </div>
 
     <textarea id="chinese-text" rows="4" placeholder="Enter Chinese text here..."></textarea>
