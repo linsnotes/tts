@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text to Speech and Pinyin Conversion</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .container, .pinyin-container {
+    max-width: 90%;
+    width: 400px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+  }
+
+  /* Styles for Pinyin Container */
+  .pinyin-container {
+    margin-left: 50px; /* Space from the main container */
+    width: 800px;
+
+  }
+
+  @media only screen and (max-width: 768px) {
+    .container, .pinyin-container {
+      width: 90%;
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .pinyin-container {
+      margin-top: 20px;
+      margin-left: 0; /* Remove left margin on mobile screens */
+    }
+  }
+
+  textarea, select {
+    height: 10%;
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: none;
+  }
+  
+ #chinese-text {
+  height: 10%;
+}
+
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: #9fc8f5 url('data:image/svg+xml;utf8,<svg fill="%231f1f1f" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>') no-repeat right 10px center;
+    background-size: 24px;
+    padding-right: 30px;
+  }
+
+  input[type="range"], button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+  }
+
+  button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .loading {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+  }
+
+  .loading img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .instructions, .adjustment-info {
+    color: #888;
+    font-size: 14px;
+  }
+
+  .instructions {
+    margin-top: 0;
+  }
+
+  #pinyinResult {
+    margin-top: 15px; /* Adjust this value as needed */
+  }
+  .py-pinyin-item {
+    color: black;
+    font-size: 20px;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  .py-chinese-item {
+    color: blue;
+    font-size: 14px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+  }
+
+
+
+</style>
+</head>
+<body>
+  <!-- Text to Speech Container -->
+  <div class="container">
+    <div class="instructions">
+      <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">Text to Speech</p>
+      <p style="margin-bottom: 10px;">Select a <b>language</b>, adjust <b>speed</b> and <b>pitch</b>, then click  "<span style="color: #4CAF50;"><b>Generate Speech</b></span>". If issues arise, try another <u>language voice</u>.</p>
+    </div>
+
+    <textarea id="text-to-speak" rows="4" placeholder="Type your text here..."></textarea>
+    <select id="chinese-voice-select">
+      <option value="">Select Voice</option>
+    </select>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <label for="rate">Speed:</label>
+      <input type="range" id="rate" min="0.1" max="2" step="0.1" value="1">
+    </div>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <label for="pitch">Pitch:</label>
+      <input type="range" id="pitch" min="0.1" max="2" step="0.1" value="1">
+    </div>
+    <button onclick="toggleSpeak()">Generate Speech</button>
+    <button onclick="pauseResume()">Pause/Resume</button>
+    <div class="loading">
+      <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Loading...">
+    </div>
+    <div class="adjustment-info">Please note: Any adjustment to the voice, speed, or pitch requires pressing "Generate Speech" again for it to take effect.</div>
+  </div>
+
+  <!-- Pinyin Conversion Container -->
+  <div class="pinyin-container">
+
+    <div class="instructions">
+      <p style="font-weight: bold; font-size: 16px; margin-bottom: 5px;">Pinyin Conversion</p>
+      <p style="margin-bottom: 10px;">Paste your Chinese text.<br>Click the "<span style="color: #4CAF50;"><b>Generate Pinyin</b></span>" button to view the Pinyin transcription.</p>
+    </div>
+
+    <textarea id="chinese-text" rows="4" placeholder="Enter Chinese text here..."></textarea>
+    <button onclick="generatePinyin()">Generate Pinyin</button>
+    <div id="pinyinResult"></div>
+  </div>
+
+  <!-- Include pinyin-pro library -->
+  <script src="https://unpkg.com/pinyin-pro"></script>
+  <script>
+    function generatePinyin() {
+      var chineseText = document.getElementById('chinese-text').value;
+      var result = pinyinPro.html(chineseText);
+      document.getElementById('pinyinResult').innerHTML = result;
+    }
+
+    let isSpeaking = false;
+    let utterance = null;
+
+    function populateVoices() {
+      const voiceSelect = document.getElementById("chinese-voice-select");
+      voiceSelect.innerHTML = '';
+
+      const voices = speechSynthesis.getVoices();
+      voices.forEach(voice => {
+        const option = document.createElement("option");
+        option.value = voice.name;
+        option.textContent = voice.name + ' (' + voice.lang + ')';
+        voiceSelect.appendChild(option);
+      });
+    }
+
+    populateVoices();
+    speechSynthesis.onvoiceschanged = populateVoices;
+
+    function speak() {
+      const text = document.getElementById("text-to-speak").value;
+      const selectedVoice = document.getElementById("chinese-voice-select").value;
+      const rate = parseFloat(document.getElementById("rate").value);
+      const pitch = parseFloat(document.getElementById("pitch").value);
+      
+      document.querySelector('.loading').style.display = 'block';
+      utterance = new SpeechSynthesisUtterance(text);
+      
+      const selectedVoiceObj = speechSynthesis.getVoices().find(voice => voice.name === selectedVoice);
+      if (selectedVoiceObj) {
+        utterance.voice = selectedVoiceObj;
+      } else {
+        alert("Please select a voice!");
+        document.querySelector('.loading').style.display = 'none';
+        return;
+      }
+
+      utterance.rate = rate;
+      utterance.pitch = pitch;
+      speechSynthesis.speak(utterance);
+      isSpeaking = true;
+
+      utterance.onstart = () => {
+        document.querySelector('.loading').style.display = 'none';
+      };
+
+      utterance.onend = () => {
+        isSpeaking = false;
+      };
+    }
+
+    function pauseResume() {
+      if (!utterance) return;
+
+      if (isSpeaking) {
+        speechSynthesis.pause();
+        isSpeaking = false;
+      } else {
+        speechSynthesis.resume();
+        isSpeaking = true;
+      }
+    }
+
+    function toggleSpeak() {
+      if (isSpeaking) {
+        speechSynthesis.cancel();
+        isSpeaking = false;
+      } else {
+        speak();
+      }
+    }
+  </script>
+</body>
+</html>
