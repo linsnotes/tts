@@ -127,6 +127,13 @@
 </style>
 </head>
 <body>
+
+   <!-- Description Container -->
+  <div id="description-container" style="background-color: crimson; color: #fff; padding: 10px; text-align: center;">
+    <p>This website aims to assist Chinese language learners in improving their oral reading skills. The text-to-speech feature utilizes the capabilities of your browser. See the note below for more details.</p>
+    <button onclick="closeDescription()" style="background-color: #4CAF50; width: 10em; color: #fff; padding: 10px; border: none; cursor: pointer;">Close</button>
+
+  </div>
   <!-- Text to Speech Container -->
   <div class="container">
     <div class="instructions">
@@ -152,8 +159,8 @@
       <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" alt="Loading...">
     </div>
     <div class="adjustment-info">
-      <p style="color: grey;"><span style="color: red;"><b>Note:</b></span><br><br>This text-to-speech feature utilises the built-in capabilities of web browsers for speech synthesis.<br><br>For the best quality and most natural-sounding speech experience, open this web page using the <span style="color: navy;"><b>Edge browser</b></span> on a <span style="color: navy;"><b>Windows PC</b></span>.<br><br>For <span style="color: navy;"><b>iOS</b></span> users, you can select either Tingting(zh-CN) or Meijia (zh-TW) for Chinese text-to-speech synthesis. For <span style="color: navy;"><b>Android</b></span> users, the web browser may not have the necessary capabilities for text-to-speech functionality. Even if it does work, the quality of the speech produced will be very poor.</p>
-    </div>
+<p style="color: grey;"><span style="color: red;"><b>Note:</b></span><br><br>This text-to-speech feature utilizes the built-in capabilities of web browsers for speech synthesis.<br><br>For the best quality and most natural-sounding speech experience, open this web page using the <span style="color: navy;"><b>Edge browser</b></span> on a <span style="color: ;"><b>Windows PC</b></span>.<br><br>For <span style="color: navy;"><b>iOS</b></span> users, you can select either Tingting(zh-CN) or Meijia (zh-TW) for Chinese text-to-speech synthesis. For <span style="color: navy;"><b>Android</b></span> users, the web browser may not have the necessary capabilities for text-to-speech functionality. Even if it does work, the quality of the speech produced will be very poor.</p>
+</div>
   </div>
 
   <!-- Pinyin Conversion Container -->
@@ -248,6 +255,10 @@
       } else {
         speak();
       }
+    }
+    // Function to close the description container
+    function closeDescription() {
+      document.getElementById("description-container").style.display = "none";
     }
   </script>
 </body>
