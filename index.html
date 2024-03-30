@@ -266,7 +266,7 @@
 
     function populateVoices() {
       const voiceSelect = document.getElementById("chinese-voice-select");
-      voiceSelect.innerHTML = '';
+      voiceSelect.innerHTML = '<option value="" selected>Select Language and Voice</option>';
 
       const voices = speechSynthesis.getVoices();
       voices.forEach(voice => {
